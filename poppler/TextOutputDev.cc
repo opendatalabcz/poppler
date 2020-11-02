@@ -2691,8 +2691,22 @@ void TextPage::addChar(const GfxState *state, double x, double y, double dx, dou
         }
     }
 
+    // replace 0A (\n) with 7F (DEL) to preserve ')' in shifted charset documents
+    Unicode u2 = u[0];
+    if(u2 == 0x000A){
+        u2 = 0x007F;
+    }
+
+    // ignore fonts other than "Myriad" family
+    GfxFont * font = state->getFont();
+    const  GooString * fontName = font->getName();
+    if(fontName && fontName->toStr().substr(0, 6) != std::string("Myriad") ){
+        charPos += nBytes;
+        return;
+    }
+
     // break words at space character
-    if (uLen == 1 && UnicodeIsWhitespace(u[0])) {
+    if (uLen == 1 && UnicodeIsWhitespaceSimple(u[0])) {
         charPos += nBytes;
         endWord();
         return;
@@ -2792,7 +2806,7 @@ void TextPage::addChar(const GfxState *state, double x, double y, double dx, dou
         w1 /= uLen;
         h1 /= uLen;
         for (i = 0; i < uLen; ++i) {
-            curWord->addChar(state, curFont, x1 + i * w1, y1 + i * h1, w1, h1, charPos, nBytes, c, u[i], mat);
+            curWord->addChar(state, curFont, x1 + i * w1, y1 + i * h1, w1, h1, charPos, nBytes, c, (i==0) ? u2 : u[i], mat);
         }
     }
     charPos += nBytes;

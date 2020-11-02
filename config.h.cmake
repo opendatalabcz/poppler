@@ -148,7 +148,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "${POPPLER_VERSION}"
+#define PACKAGE_VERSION "${POPPLER_VERSION}-mod1"
 
 /* Poppler data dir */
 #define POPPLER_DATADIR "${POPPLER_DATADIR}"

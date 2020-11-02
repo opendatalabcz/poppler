@@ -144,6 +144,24 @@ bool UnicodeIsWhitespace(Unicode ucs4)
     return (i != end && *i == ucs4);
 }
 
+// Modified version for PDFs with shifted character sets
+bool UnicodeIsWhitespaceSimple(Unicode ucs4)
+{
+  static Unicode const spaces[] = { 
+      //0x0009, // horizontal tab   => 0x28 = (
+      //0x000A, // NL new line      => 0x29 = )
+      //0x000B, // VT vertical tab  => 0x2A = *
+      //0x000C, // NP new page      => 0x2B = +
+      //0x000D, // CR carriage ret. => 0x2C = ,
+      //0x0020, // space            => 0x3F = ?
+    0x0085, 0x00A0, 0x2000, 0x2001, 0x2002, 0x2003, 0x2004, 0x2005,
+    0x2006, 0x2007, 0x2008, 0x2009, 0x200A, 0x2028, 0x2029, 0x202F, 0x205F,
+    0x3000 };
+  Unicode const *end = spaces + sizeof(spaces) / sizeof(spaces[0]);
+  Unicode const *i = std::lower_bound(spaces, end, ucs4);
+  return (i != end && *i == ucs4);
+}
+
 //
 // decodeUtf8() and decodeUtf8Table are:
 //

@@ -41,6 +41,9 @@ bool UnicodeIsValid(Unicode ucs4);
 // is a unicode whitespace character
 bool UnicodeIsWhitespace(Unicode ucs4);
 
+// Modified version for PDFs with shifted character sets
+bool UnicodeIsWhitespaceSimple(Unicode ucs4);
+
 // Count number of UTF-16 code units required to convert a UTF-8 string
 // (excluding terminating NULL). Each invalid byte is counted as a
 // code point since the UTF-8 conversion functions will replace it with
